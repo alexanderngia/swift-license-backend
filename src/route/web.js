@@ -17,6 +17,10 @@ let initWebRoutes = (app) => {
   // API LICENSE KEY
   router.get("/api/license-key", licenseController.handleGetAllLicense);
   router.post("/api/license-key/create", licenseController.handleCreateLicense);
+  router.post(
+    "/api/license-key/authenticate",
+    licenseController.handleAuthenticateLicense
+  );
   router.put("/api/license-key/edit", licenseController.handleEditLicense);
   router.delete(
     "/api/license-key/delete",

@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      licenseStatus: {
+        type: Sequelize.INTEGER,
+      },
       customerName: {
         type: Sequelize.TEXT("long"),
       },

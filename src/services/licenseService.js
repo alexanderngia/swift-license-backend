@@ -1,6 +1,8 @@
 import db from "../models/index";
+import bcrypt from "bcryptjs";
+const salt = bcrypt.genSaltSync(10);
 
-let getAllLicense = () => {
+const getAllLicense = () => {
   return new Promise(async (resolve, reject) => {
     try {
       let licenseList = await db.License.findAll({});
@@ -15,31 +17,40 @@ let getAllLicense = () => {
   });
 };
 
-let createLicense = (data) => {
+const createLicense = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (data) {
-        await db.Products.create({
-          idItem: data.idItem,
-          imgItem: data.imgItem,
-          urlItem: data.urlItem,
-          nameItem: data.nameItem,
-          bodyItem: data.bodyItem,
-          bodyHtmlItem: data.bodyHtmlItem,
-          qualityItem: data.qualityItem,
-          colorItem: data.colorItem,
-          sizeItem: data.sizeItem,
-          priceItem: data.priceItem,
-          categoryItem: data.categoryItem,
-          keywordTagItem: data.keywordTagItem,
-          titleTagItem: data.titleTagItem,
-          descripTagItem: data.descripTagItem,
-          authorItem: data.authorItem,
-        });
-        resolve({
-          errCode: 0,
-          message: ` was created successfully!`,
-        });
+        const isExit = await checkLicense(data);
+        if (!isExit) {
+          const hashedLicenseKey = await hashLicense(data.domain);
+          await db.License.create({
+            licenseStatus: data.status,
+            customerName: data.name,
+            customerEmail: data.email,
+            domain: data.domain,
+            shopId: data.shopId,
+            licenseKey: hashedLicenseKey,
+          });
+
+          const newLicense = await db.License.findOne({
+            where: {
+              licenseKey: hashedLicenseKey,
+            },
+          });
+          if (newLicense) {
+            resolve({
+              errCode: 0,
+              message: `License was created successfully!`,
+              newLicense,
+            });
+          }
+        } else {
+          resolve({
+            errCode: 1,
+            message: `Domain was existed!`,
+          });
+        }
       } else {
         resolve({
           errCode: 2,
@@ -51,8 +62,71 @@ let createLicense = (data) => {
     }
   });
 };
+const checkLicense = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // check xem license có tồn tại hay không
+      const isExit = await db.License.findOne({
+        where: {
+          licenseKey: data.activationKey,
+        },
+      });
+      if (isExit) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+const hashLicense = (domain) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const hash = bcrypt.hashSync(domain, salt);
+      resolve(hash);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
-let updateLicense = (data) => {
+const authenticateLicense = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (data) {
+        if (!data.activationKey) {
+          resolve({
+            errCode: 2,
+            errMessage: "Missing license key",
+            themeStatus: false,
+          });
+        }
+
+        const isExit = await db.License.findOne({
+          where: {
+            licenseKey: data.activationKey,
+          },
+          raw: false,
+        });
+        if (isExit) {
+          // check shopId
+          // có shopid
+          // chưa có shopId
+          // update shopId + active status
+        } else {
+        }
+      }
+      const hash = bcrypt.hashSync(domain, salt);
+      resolve(hash);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const updateLicense = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (!data.id) {
@@ -98,7 +172,7 @@ let updateLicense = (data) => {
   });
 };
 
-let deleteLicenseById = (productId) => {
+const deleteLicenseById = (productId) => {
   return new Promise(async (resolve, reject) => {
     try {
       let product = await db.Products.findOne({
@@ -124,6 +198,7 @@ let deleteLicenseById = (productId) => {
 module.exports = {
   getAllLicense: getAllLicense,
   createLicense: createLicense,
+  authenticateLicense: authenticateLicense,
   updateLicense: updateLicense,
   deleteLicenseById: deleteLicenseById,
 };

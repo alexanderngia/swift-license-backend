@@ -4,6 +4,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert("License", [
       {
+        licenseStatus: 0,
         customerName: "Markus Greuter",
         customerEmail: "finance@uniteddeluxe.de",
         domain: "12412321nbj21b312j31231j23.myshopify.com",
@@ -13,6 +14,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        licenseStatus: 0,
         customerName: "Mike Barnardo",
         customerEmail: "hello@totalsmile.co.za",
         domain: "hello.myshopify.com",
@@ -22,6 +24,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        licenseStatus: 0,
         customerName: "Adams Lowe",
         customerEmail: "support@trucksrus.shop",
         domain: "swifthemee.myshopify.com",

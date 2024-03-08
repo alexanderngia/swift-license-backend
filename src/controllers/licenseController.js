@@ -1,24 +1,29 @@
 import licenseService from "../services/licenseService";
 
-let handleGetAllLicense = async (req, res) => {
-  let licenseList = await licenseService.getAllLicense();
+const handleGetAllLicense = async (req, res) => {
+  const licenseList = await licenseService.getAllLicense();
 
   return res.status(200).json(licenseList);
 };
 
-let handleCreateLicense = async (req, res) => {
-  let message = await licenseService.createProduct(req.body);
+const handleCreateLicense = async (req, res) => {
+  const message = await licenseService.createLicense(req.body);
   return res.status(200).json(message);
 };
 
-let handleEditLicense = async (req, res) => {
-  let data = req.body;
-  let message = await licenseService.updateProduct(data);
+const handleAuthenticateLicense = async (req, res) => {
+  const result = await licenseService.authenticateLicense(req.body);
+  return res.status(200).json(result);
+};
+
+const handleEditLicense = async (req, res) => {
+  const data = req.body;
+  const message = await licenseService.updateProduct(data);
   return res.status(200).json(message);
 };
 
-let handleDeleteLicense = async (req, res) => {
-  let id = req.body.idItem;
+const handleDeleteLicense = async (req, res) => {
+  const id = req.body.idItem;
 
   if (!id) {
     return res.status(200).json({
@@ -27,13 +32,14 @@ let handleDeleteLicense = async (req, res) => {
     });
   }
 
-  let message = await licenseService.deleteProductById(id);
+  const message = await licenseService.deleteProductById(id);
   return res.status(200).json(message);
 };
 
 module.exports = {
   handleGetAllLicense: handleGetAllLicense,
   handleCreateLicense: handleCreateLicense,
+  handleAuthenticateLicense: handleAuthenticateLicense,
   handleEditLicense: handleEditLicense,
   handleDeleteLicense: handleDeleteLicense,
 };
