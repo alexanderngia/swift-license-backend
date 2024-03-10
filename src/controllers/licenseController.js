@@ -12,7 +12,7 @@ const handleCreateLicense = async (req, res) => {
 };
 
 const handleAuthenticateLicense = async (req, res) => {
-  const result = await licenseService.authenticateLicense(req.body);
+  const result = await licenseService.authenticateLicense(req.body.infoStore);
   return res.status(200).json(result);
 };
 

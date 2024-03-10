@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       customerName: DataTypes.STRING,
       customerEmail: DataTypes.STRING,
       domain: DataTypes.STRING,
-      shopId: DataTypes.TEXT("long"),
+      shopId: DataTypes.BIGINT,
       licenseKey: DataTypes.TEXT("long"),
     },
     {

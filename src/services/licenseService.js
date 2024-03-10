@@ -21,7 +21,7 @@ const createLicense = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (data) {
-        const isExit = await checkLicense(data);
+        const isExit = await checkDomain(data);
         if (!isExit) {
           const hashedLicenseKey = await hashLicense(data.domain);
           await db.License.create({
@@ -38,6 +38,7 @@ const createLicense = (data) => {
               licenseKey: hashedLicenseKey,
             },
           });
+          console.log(newLicense.shopId, "newLicense from create");
           if (newLicense) {
             resolve({
               errCode: 0,
@@ -62,13 +63,12 @@ const createLicense = (data) => {
     }
   });
 };
-const checkLicense = (data) => {
+const checkDomain = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      // check xem license có tồn tại hay không
       const isExit = await db.License.findOne({
         where: {
-          licenseKey: data.activationKey,
+          domain: data.domain,
         },
       });
       if (isExit) {
@@ -95,31 +95,85 @@ const hashLicense = (domain) => {
 const authenticateLicense = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (data) {
-        if (!data.activationKey) {
+      if (!data) {
+        resolve({
+          errCode: 3,
+          errMessage: "Missing data from api!",
+          themeStatus: false,
+        });
+      }
+      if (!data.activeKey) {
+        resolve({
+          errCode: 0,
+          errMessage: "Missing license key",
+          themeStatus: false,
+        });
+      }
+      if (!data.shopDomain) {
+        resolve({
+          errCode: 0,
+          errMessage: "Missing domain params",
+          themeStatus: false,
+        });
+      }
+      if (!data.shopId) {
+        resolve({
+          errCode: 0,
+          errMessage: "Missing shop id params",
+          themeStatus: false,
+        });
+      }
+
+      const isLicenseExit = await db.License.findOne({
+        where: {
+          licenseKey: data.activeKey,
+        },
+        raw: false,
+      });
+
+      if (!isLicenseExit) {
+        resolve({
+          errCode: 1,
+          errMessage: "License was not existed!",
+          themeStatus: false,
+        });
+      }
+      // license chưa được active
+
+      if (
+        isLicenseExit.licenseStatus === 0 &&
+        isLicenseExit.domain === data.shopDomain
+      ) {
+        if (isLicenseExit.shopId === null) {
+          isLicenseExit.shopId = data.shopId;
+          isLicenseExit.licenseStatus = 1;
+          await isLicenseExit.save();
+          resolve({
+            message: "Active theme successfully!",
+            themeStatus: true,
+          });
+        }
+      }
+      // license đã được active
+      if (isLicenseExit.licenseStatus === 1) {
+        if (isLicenseExit.shopId === data.shopId) {
+          if (isLicenseExit.domain !== data.shopDomain) {
+            isLicenseExit.domain = data.shopDomain;
+            await isLicenseExit.save();
+          }
+
+          resolve({
+            message: "Theme is working successfully!",
+            themeStatus: true,
+          });
+        } else {
           resolve({
             errCode: 2,
-            errMessage: "Missing license key",
+            errMessage: "License already was used!",
             themeStatus: false,
           });
         }
-
-        const isExit = await db.License.findOne({
-          where: {
-            licenseKey: data.activationKey,
-          },
-          raw: false,
-        });
-        if (isExit) {
-          // check shopId
-          // có shopid
-          // chưa có shopId
-          // update shopId + active status
-        } else {
-        }
       }
-      const hash = bcrypt.hashSync(domain, salt);
-      resolve(hash);
     } catch (error) {
       reject(error);
     }

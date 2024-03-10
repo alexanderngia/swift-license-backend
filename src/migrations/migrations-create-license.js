@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.TEXT("long"),
       },
       shopId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
       },
       licenseKey: {
         type: Sequelize.TEXT("long"),
