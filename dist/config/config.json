@@ -1,0 +1,33 @@
+{
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "swift_manager",
+    "host": "localhost",
+    "dialect": "mysql",
+    "logging": false,
+    "query": {
+      "raw": true
+    },
+    "timezone": "+07:00"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "development": {
+    "host": "sql.freedb.tech",
+    "username": "freedb_baong",
+    "password": "Qdq*YK&pvZk8t7P",
+    "database": "freedb_swift_manager",
+    "dialect": "mysql",
+    "logging": false,
+    "query": {
+      "raw": true
+    },
+    "timezone": "+07:00"
+  }
+}
