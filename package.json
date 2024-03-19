@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel src -d dist",
+    "start": "node dist/server.js",
+    "build": "babel src -d dist",
     "start:dev": "nodemon --exec babel-node src/server.js"
   },
   "keywords": [
