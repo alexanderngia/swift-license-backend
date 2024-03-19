@@ -1,5 +1,5 @@
 "use strict";
-require("dotenv").config();
+import "dotenv/config";
 import { readdirSync } from "fs";
 import { basename as _basename, join } from "path";
 import Sequelize, { DataTypes } from "sequelize";
@@ -31,6 +31,7 @@ readdirSync(__dirname)
     db[model.name] = model;
   });
 
+  
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

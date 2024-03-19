@@ -1,10 +1,10 @@
 import express from "express";
 // import userController from "../controllers/userController";
-import licenseController from "../controllers/licenseController";
+import { licenseController } from "../controllers/licenseController.js";
 
 let router = express.Router();
 
-let initWebRoutes = (app) => {
+export const initWebRoutes = (app) => {
   // // API AUTHENTICATE
   // router.post("/api/auth/signin", userController.handleLogin);
   // router.post("/api/auth/signup", userController.handleRegister);
@@ -29,5 +29,3 @@ let initWebRoutes = (app) => {
 
   return app.use("/", router);
 };
-
-module.exports = initWebRoutes;

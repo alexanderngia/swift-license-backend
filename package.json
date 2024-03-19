@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node src/server.js"
+    "start": "babel src -d dist",
+    "start:dev": "nodemon --exec babel-node src/server.js"
   },
   "keywords": [
     "backend",
@@ -30,7 +31,8 @@
     "sequelize": "^6.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
+    "@babel/cli": "^7.24.1",
+    "@babel/core": "^7.24.1",
     "@babel/node": "^7.12.10",
     "@babel/preset-env": "^7.12.10",
     "babel": "^6.23.0",

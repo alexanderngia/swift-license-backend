@@ -1,4 +1,4 @@
-import db from "../models/index";
+import db from "../models/index.js";
 import bcrypt from "bcryptjs";
 const salt = bcrypt.genSaltSync(10);
 
@@ -249,7 +249,7 @@ const deleteLicenseById = (productId) => {
     }
   });
 };
-module.exports = {
+export const licenseService = {
   getAllLicense: getAllLicense,
   createLicense: createLicense,
   authenticateLicense: authenticateLicense,

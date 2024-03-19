@@ -1,7 +1,6 @@
 const { Sequelize } = require("sequelize");
 
-require("dotenv").config();
-
+import "dotenv/config";
 // // Option 1: Passing a connection URI
 // const sequelize = new Sequelize('sqlite::memory:') // Example for sqlite
 // const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname') // Example for postgres
@@ -30,7 +29,7 @@ const sequelize = new Sequelize(
   }
 );
 
-let connectDB = async () => {
+export const connectDB = async () => {
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
@@ -38,5 +37,3 @@ let connectDB = async () => {
     console.error("Unable to connect to the database:", error);
   }
 };
-
-module.exports = connectDB;

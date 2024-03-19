@@ -1,4 +1,4 @@
-import licenseService from "../services/licenseService";
+import { licenseService } from "../services/licenseService.js";
 
 const handleGetAllLicense = async (req, res) => {
   const licenseList = await licenseService.getAllLicense();
@@ -36,7 +36,7 @@ const handleDeleteLicense = async (req, res) => {
   return res.status(200).json(message);
 };
 
-module.exports = {
+export const licenseController = {
   handleGetAllLicense: handleGetAllLicense,
   handleCreateLicense: handleCreateLicense,
   handleAuthenticateLicense: handleAuthenticateLicense,
