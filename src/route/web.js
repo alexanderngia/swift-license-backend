@@ -1,10 +1,12 @@
 import express from "express";
 // import userController from "../controllers/userController";
+import { homeController } from "../controllers/homeController.js";
 import { licenseController } from "../controllers/licenseController.js";
 
 let router = express.Router();
 
 export const initWebRoutes = (app) => {
+  router.get("/", homeController.getHomePage);
   // // API AUTHENTICATE
   // router.post("/api/auth/signin", userController.handleLogin);
   // router.post("/api/auth/signup", userController.handleRegister);

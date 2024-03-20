@@ -5,12 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.initWebRoutes = void 0;
 var _express = _interopRequireDefault(require("express"));
+var _homeController = require("../controllers/homeController.js");
 var _licenseController = require("../controllers/licenseController.js");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 // import userController from "../controllers/userController";
 
 var router = _express["default"].Router();
 var initWebRoutes = exports.initWebRoutes = function initWebRoutes(app) {
+  router.get("/", _homeController.homeController.getHomePage);
   // // API AUTHENTICATE
   // router.post("/api/auth/signin", userController.handleLogin);
   // router.post("/api/auth/signup", userController.handleRegister);
