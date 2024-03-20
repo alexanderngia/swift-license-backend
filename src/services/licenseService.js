@@ -225,21 +225,21 @@ const updateLicense = (data) => {
   });
 };
 
-const deleteLicenseById = (productId) => {
+const deleteLicenseById = (licenseId) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let product = await db.Products.findOne({
-        where: { idItem: productId },
+      let license = await db.License.findOne({
+        where: { id: licenseId },
       });
-      if (!product) {
+      if (!license) {
         resolve({
           errCode: 1,
-          errMessage: "Product isn't exist",
+          errMessage: "License isn't exist",
         });
       }
 
-      await db.Products.destroy({
-        where: { idItem: productId },
+      await db.License.destroy({
+        where: { id: licenseId },
       });
 
       resolve({ errCode: 0, message: " was deleted!" });

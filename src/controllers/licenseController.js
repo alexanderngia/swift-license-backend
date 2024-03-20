@@ -23,7 +23,7 @@ const handleEditLicense = async (req, res) => {
 };
 
 const handleDeleteLicense = async (req, res) => {
-  const id = req.body.idItem;
+  const id = req.body.id;
 
   if (!id) {
     return res.status(200).json({
@@ -32,7 +32,7 @@ const handleDeleteLicense = async (req, res) => {
     });
   }
 
-  const message = await licenseService.deleteProductById(id);
+  const message = await licenseService.deleteLicenseById(id);
   return res.status(200).json(message);
 };
 
