@@ -1,6 +1,6 @@
 import db from "../models/index.js";
 import bcrypt from "bcryptjs";
-const salt = bcrypt.genSaltSync(12);
+const salt = bcrypt.genSaltSync(10);
 
 const getAllLicense = () => {
   return new Promise(async (resolve, reject) => {
