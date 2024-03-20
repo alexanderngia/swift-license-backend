@@ -12,15 +12,38 @@ var _sequelize = _interopRequireWildcard(require("sequelize"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 var basename = (0, _path.basename)(__filename);
-var env = process.env.NODE_ENV || "production";
-var config = require(__dirname + "/../config/config.json")[env];
+// const env = process.env.NODE_ENV || "production";
+// const config = require(__dirname + "/../config/config.json")[env];
 var db = {};
 var sequelize;
-if (config.use_env_variable) {
-  sequelize = new _sequelize["default"](process.env[config.use_env_variable], config);
-} else {
-  sequelize = new _sequelize["default"](config.database, config.username, config.password, config);
-}
+var customConfig = {
+  host: process.env.DB_HOST,
+  dialect: "mysql",
+  logging: false,
+  query: {
+    raw: true
+  },
+  timezone: "+07:00",
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  }
+};
+sequelize = new _sequelize["default"](process.env.DB_DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, customConfig);
+
+// if (config.use_env_variable) {
+//   sequelize = new Sequelize(process.env[config.use_env_variable], config);
+// } else {
+//   sequelize = new Sequelize(
+//     config.database,
+//     config.username,
+//     config.password,
+//     config
+//   );
+// }
+
 (0, _fs.readdirSync)(__dirname).filter(function (file) {
   return file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js";
 }).forEach(function (file) {

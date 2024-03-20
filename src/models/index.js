@@ -4,21 +4,45 @@ import { readdirSync } from "fs";
 import { basename as _basename, join } from "path";
 import Sequelize, { DataTypes } from "sequelize";
 const basename = _basename(__filename);
-const env = process.env.NODE_ENV || "production";
-const config = require(__dirname + "/../config/config.json")[env];
+// const env = process.env.NODE_ENV || "production";
+// const config = require(__dirname + "/../config/config.json")[env];
 const db = {};
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
-  );
-}
+
+const customConfig = {
+  host: process.env.DB_HOST,
+  dialect: "mysql",
+  logging: false,
+  query: {
+    raw: true,
+  },
+  timezone: "+07:00",
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+};
+
+sequelize = new Sequelize(
+  process.env.DB_DATABASE,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
+  customConfig
+);
+
+// if (config.use_env_variable) {
+//   sequelize = new Sequelize(process.env[config.use_env_variable], config);
+// } else {
+//   sequelize = new Sequelize(
+//     config.database,
+//     config.username,
+//     config.password,
+//     config
+//   );
+// }
 
 readdirSync(__dirname)
   .filter((file) => {
@@ -31,7 +55,6 @@ readdirSync(__dirname)
     db[model.name] = model;
   });
 
-  
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
