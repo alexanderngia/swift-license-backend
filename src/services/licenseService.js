@@ -1,6 +1,6 @@
 import db from "../models/index.js";
 import bcrypt from "bcryptjs";
-const salt = bcrypt.genSaltSync(10);
+const salt = bcrypt.genSaltSync(8);
 
 const getAllLicense = () => {
   return new Promise(async (resolve, reject) => {
@@ -30,7 +30,7 @@ const createLicense = (data) => {
             customerEmail: data.email,
             domain: data.domain,
             shopId: data.shopId,
-            licenseKey: hashedLicenseKey,
+            licenseKey: `LIC-${hashedLicenseKey}_key`,
           });
 
           const newLicense = await db.License.findOne({
@@ -38,7 +38,6 @@ const createLicense = (data) => {
               licenseKey: hashedLicenseKey,
             },
           });
-          console.log(newLicense.shopId, "newLicense from create");
           if (newLicense) {
             resolve({
               errCode: 0,
