@@ -35,7 +35,7 @@ const createLicense = (data) => {
 
           const newLicense = await db.License.findOne({
             where: {
-              licenseKey: hashedLicenseKey,
+              domain: data.domain,
             },
           });
           if (newLicense) {
