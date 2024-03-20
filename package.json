@@ -1,7 +1,7 @@
 {
-  "name": "swift-license-manager",
+  "name": "swift-license-backend",
   "version": "1.0.0",
-  "description": "swift license key manager",
+  "description": "swift license key backend",
   "main": "server.js",
   "engine": {
     "node": "14.x"
