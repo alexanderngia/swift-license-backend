@@ -7,7 +7,7 @@ import "dotenv/config";
 
 let router = express.Router();
 
-var allowlist = [`${process.env.DOMAIN_CLIENT}`];
+var allowlist = [`${process.env.DOMAIN_CLIENT}`, `http://localhost:3000/`];
 var corsOptionsDelegate = function (req, callback) {
   var corsOptions;
   if (allowlist.indexOf(req.header("Origin")) !== -1) {
