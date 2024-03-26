@@ -138,7 +138,10 @@ const authenticateLicense = (data) => {
         });
       }
       // license chưa được active
-
+      const themeModule = await db.SwiftModule.findOne({
+        where: { id: 1 },
+        raw: false,
+      });
       if (
         isLicenseExit.licenseStatus === 0 &&
         isLicenseExit.domain === data.shopDomain
@@ -147,9 +150,10 @@ const authenticateLicense = (data) => {
           isLicenseExit.shopId = data.shopId;
           isLicenseExit.licenseStatus = 1;
           await isLicenseExit.save();
+
           resolve({
             message: "Active theme successfully!",
-            themeStatus: true,
+            themeModule,
           });
         }
       }
@@ -163,13 +167,12 @@ const authenticateLicense = (data) => {
 
           resolve({
             message: "Theme is working successfully!",
-            themeStatus: true,
+            themeModule,
           });
         } else {
           resolve({
             errCode: 2,
             errMessage: "License already was used!",
-            themeStatus: false,
           });
         }
       }

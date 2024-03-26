@@ -100,7 +100,7 @@ var handleDeleteLicense = /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
-          id = req.body.idItem;
+          id = req.body.id;
           if (id) {
             _context5.next = 3;
             break;
@@ -111,7 +111,7 @@ var handleDeleteLicense = /*#__PURE__*/function () {
           }));
         case 3:
           _context5.next = 5;
-          return _licenseService.licenseService.deleteProductById(id);
+          return _licenseService.licenseService.deleteLicenseById(id);
         case 5:
           message = _context5.sent;
           return _context5.abrupt("return", res.status(200).json(message));

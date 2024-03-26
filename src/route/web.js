@@ -2,6 +2,8 @@ import express from "express";
 // import userController from "../controllers/userController";
 import { homeController } from "../controllers/homeController.js";
 import { licenseController } from "../controllers/licenseController.js";
+import { swiftModuleController } from "../controllers/swiftModuleController.js";
+
 import cors from "cors";
 import "dotenv/config";
 
@@ -56,5 +58,17 @@ export const initWebRoutes = (app) => {
     licenseController.handleDeleteLicense
   );
 
+  //API MODULE THEME
+  router.get(
+    "/api/module-theme",
+    cors(corsOptionsDelegate),
+    swiftModuleController.handleGetCode
+  );
+
+  router.put(
+    "/api/module-theme/update",
+    cors(corsOptionsDelegate),
+    swiftModuleController.handleEditCode
+  );
   return app.use("/", router);
 };
